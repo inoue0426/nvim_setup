@@ -22,20 +22,20 @@ This script automates the installation and basic configuration of Neovim on your
 
 1. Clone this repository or download the script:
 
-   ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   ```sh
+   git clone git@github.com:inoue0426/nvim_setup.git
+   cd nvim_setup
    ```
 
 2. Make the script executable:
 
-   ```bash
+   ```sh
    chmod +x setup_neovim.sh
    ```
 
 3. Run the script:
 
-   ```bash
+   ```sh
    ./setup_neovim.sh
    ```
 
