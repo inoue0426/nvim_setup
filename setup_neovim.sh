@@ -72,4 +72,32 @@ EOF
 echo "プラグインをインストールしています..."
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
+# vimのエイリアスとしてNeovimを設定
+echo "vimのエイリアスとしてNeovimを設定しています..."
+
+# ユーザーのシェルを確認
+if [ -n "$ZSH_VERSION" ]; then
+    SHELL_RC="$HOME/.zshrc"
+elif [ -n "$BASH_VERSION" ]; then
+    SHELL_RC="$HOME/.bashrc"
+else
+    echo "未対応のシェルです。手動でエイリアスを設定してください。"
+    SHELL_RC=""
+fi
+
+if [ -n "$SHELL_RC" ]; then
+    # エイリアスが既に存在するか確認
+    if ! grep -q "alias vim='nvim'" "$SHELL_RC"; then
+        echo "alias vim='nvim'" >> "$SHELL_RC"
+        echo "alias vi='nvim'" >> "$SHELL_RC"
+        echo "エイリアスを $SHELL_RC に追加しました。"
+    else
+        echo "エイリアスは既に設定されています。"
+    fi
+    
+    # 変更を即座に反映
+    source "$SHELL_RC"
+fi
+
 echo "Neovimのセットアップが完了しました！"
+echo "新しいターミナルセッションを開始するか、'source $SHELL_RC'を実行してエイリアスを有効にしてください。"
