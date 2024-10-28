@@ -1,6 +1,8 @@
 # Neovim Setup Script
 
-This script automates the installation and basic configuration of Neovim on your system. It sets up essential plugins and configures aliases for `vim` and `vi` to point to Neovim.
+This script automates the installation and basic configuration of Neovim on your
+system. It sets up essential plugins and configures aliases for `vim` and `vi`
+to point to Neovim.
 
 ## Features
 
@@ -16,7 +18,8 @@ This script automates the installation and basic configuration of Neovim on your
 
 ## Prerequisites
 
-- **Homebrew**: This script requires Homebrew to be installed on your macOS system. If Homebrew is not installed, the script will install it for you.
+- **Homebrew**: This script requires Homebrew to be installed on your macOS
+  system. If Homebrew is not installed, the script will install it for you.
 
 ## Usage
 
@@ -36,16 +39,33 @@ This script automates the installation and basic configuration of Neovim on your
 3. Run the script:
 
    ```sh
-   ./setup_neovim.sh
+   ./setup_nvim.sh
    ```
 
-4. After running the script, open a new terminal session or run source ~/.bashrc or source ~/.zshrc to activate the aliases.
+4. After running the script, open a new terminal session or run source ~/.bashrc
+   or source ~/.zshrc to activate the aliases.
+
+5. Change theme:
+
+   ```sh
+   ./change_theme.sh
+   ```
+
+6. Uninstall nvim:
+
+   ```sh
+   ./uninstall_nvim.sh
+   ```
 
 ### Customization
 
-You can customize the init.lua file according to your preferences by editing it directly in ~/.config/nvim/init.lua. Feel free to add or remove plugins as needed.
+You can customize the init.lua file according to your preferences by editing it
+directly in ~/.config/nvim/init.lua. Feel free to add or remove plugins as
+needed.
 
 ### Troubleshooting
 
-If you encounter any issues, ensure that you have the necessary permissions and that your shell configuration files are correctly set up.
-The script currently supports Bash and Zsh. If you use a different shell, you may need to manually set up the aliases.
+If you encounter any issues, ensure that you have the necessary permissions and
+that your shell configuration files are correctly set up. The script currently
+supports Bash and Zsh. If you use a different shell, you may need to manually
+set up the aliases.
