@@ -1,25 +1,25 @@
-#!/bin/bash
+#!/bin/zsh
 
-# Neovimのインストールと設定を自動化するスクリプト
+# Script to automate the installation and configuration of Neovim
 
-# Homebrewがインストールされているか確認
+# Check if Homebrew is installed
 if ! command -v brew &> /dev/null; then
-    echo "Homebrewがインストールされていません。インストールしています..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo "Homebrew is not installed. Installing..."
+    /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# Neovimのインストール
-echo "Neovimをインストールしています..."
+# Install Neovim
+echo "Installing Neovim..."
 brew install neovim
 
-# 設定ディレクトリの作成
-echo "Neovimの設定ディレクトリを作成しています..."
+# Create configuration directory
+echo "Creating Neovim configuration directory..."
 mkdir -p ~/.config/nvim
 
-# init.luaの作成
-echo "init.luaを作成しています..."
+# Create init.lua
+echo "Creating init.lua..."
 cat << EOF > ~/.config/nvim/init.lua
--- Packerのブートストラップ
+-- Packer bootstrap
 local fn = vim.fn
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
@@ -27,7 +27,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
   vim.cmd [[packadd packer.nvim]]
 end
 
--- プラグインの設定
+-- Plugin configuration
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use 'neovim/nvim-lspconfig'
@@ -38,20 +38,21 @@ require('packer').startup(function(use)
   use 'nvim-treesitter/nvim-treesitter'
 end)
 
--- 基本設定
+-- Basic settings
 vim.opt.number = true
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 
--- キーマッピング
+-- Key mapping
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<CR>')
 
--- LSP設定
+-- LSP configuration
 local lspconfig = require('lspconfig')
-lspconfig.tsserver.setup{}
+-- Updated to use ts_ls instead of tsserver
+lspconfig.ts_ls.setup{}
 
--- TreeSitter設定
+-- TreeSitter configuration
 require'nvim-treesitter.configs'.setup {
   ensure_installed = { "lua", "vim", "javascript", "typescript" },
   highlight = {
@@ -59,7 +60,7 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
--- 自動コマンド
+-- Auto command
 vim.cmd([[
   augroup packer_user_config
     autocmd!
@@ -68,36 +69,36 @@ vim.cmd([[
 ]])
 EOF
 
-# Neovimを起動してプラグインをインストール
-echo "プラグインをインストールしています..."
+# Start Neovim to install plugins
+echo "Installing plugins..."
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
-# vimのエイリアスとしてNeovimを設定
-echo "vimのエイリアスとしてNeovimを設定しています..."
+# Set Neovim as an alias for vim
+echo "Setting Neovim as an alias for vim..."
 
-# ユーザーのシェルを確認
-if [ -n "$ZSH_VERSION" ]; then
-    SHELL_RC="$HOME/.zshrc"
-elif [ -n "$BASH_VERSION" ]; then
+# Check the user's shell
+if [ -n "$BASH_VERSION" ]; then
     SHELL_RC="$HOME/.bashrc"
+elif [ -n "$ZSH_VERSION" ]; then
+    SHELL_RC="$HOME/.zshrc"
 else
-    echo "未対応のシェルです。手動でエイリアスを設定してください。"
+    echo "Unsupported shell. Please set the alias manually."
     SHELL_RC=""
 fi
 
 if [ -n "$SHELL_RC" ]; then
-    # エイリアスが既に存在するか確認
+    # Check if the alias already exists
     if ! grep -q "alias vim='nvim'" "$SHELL_RC"; then
         echo "alias vim='nvim'" >> "$SHELL_RC"
         echo "alias vi='nvim'" >> "$SHELL_RC"
-        echo "エイリアスを $SHELL_RC に追加しました。"
+        echo "Added aliases to $SHELL_RC."
     else
-        echo "エイリアスは既に設定されています。"
+        echo "Aliases are already set."
     fi
-    
-    # 変更を即座に反映
+
+    # Reflect changes immediately
     source "$SHELL_RC"
 fi
 
-echo "Neovimのセットアップが完了しました！"
-echo "新しいターミナルセッションを開始するか、'source $SHELL_RC'を実行してエイリアスを有効にしてください。"
+echo "Neovim setup completed!"
+echo "Please start a new terminal session or run 'source $SHELL_RC' to enable the aliases."
